@@ -168,17 +168,7 @@ class ParsingSummonerLeagueData:
         self.solo_summonerId = str(self.jsonData[0]["summonerId"])
         self.solo_leaguePoints = str(self.jsonData[0]["leaguePoints"])
 
-        #self.free_tier = self.jsonData[1]["tier"]
-        #self.free_summonerName = str(self.jsonData[1]["summonerName"])
-        #self.free_hotStreak = str(self.jsonData[1]["hotStreak"])
-        #self.free_wins = str(self.jsonData[1]["wins"])
-        #self.free_losses = str(self.jsonData[1]["losses"])
-        #self.free_rank = str(self.jsonData[1]["rank"])
-        #self.free_leagueName = str(self.jsonData[1]["leagueName"])
-        #self.free_leagueId = str(self.jsonData[1]["leagueId"])
-        #self.free_queueType = str(self.jsonData[1]["queueType"])
-        #self.free_summonerId = str(self.jsonData[1]["summonerId"])
-        #self.free_leaguePoints = str(self.jsonData[1]["leaguePoints"])
+
 
     def __str__(self):
         return "[solo]\n" + \
@@ -281,7 +271,8 @@ class ParsingSummonerDetailMatchData:
         self.jsonData = json.loads(JSON) #string 형태의 JSON 객체를 딕셔너리로 바꾼다
         self.summonerName = []
         self.champion_id = []
-        self.spell_id = []
+        self.spell1 = []
+        self.spell2 = []
         self.win = []
         self.lane = []
         self.kills = []
@@ -292,7 +283,8 @@ class ParsingSummonerDetailMatchData:
         for i in range(10):
             self.summonerName.append(str(self.jsonData["participantIdentities"][i]["player"]["summonerName"]))
             self.champion_id.append(str(self.jsonData["participants"][i]["championId"]))
-            self.spell_id.append(str((self.jsonData["participants"][i]["spell1Id"], self.jsonData["participants"][i]["spell2Id"])))
+            self.spell1.append(str((self.jsonData["participants"][i]["spell1Id"])))
+            self.spell2.append(str((self.jsonData["participants"][i]["spell2Id"])))
             self.win.append(str(self.jsonData["participants"][i]["stats"]["win"]))
             self.lane.append(str(self.jsonData["participants"][i]["timeline"]["lane"]))
             self.kills.append(str(self.jsonData["participants"][i]["stats"]["kills"]))
