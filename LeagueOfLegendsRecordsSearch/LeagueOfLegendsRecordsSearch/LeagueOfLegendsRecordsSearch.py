@@ -1,4 +1,3 @@
-#https://api.neople.co.kr/df/items?itemName=<itemName>&q=minLevel:<minLevel>,maxLevel:<maxLevel>,rarity:<rarity>,trade:<trade>&limit=<limit>&wordType=<wordType>&apikey=ppMk2pUeHbk6Wi0dazKt7YM4PvkTnzDB
 import webbrowser
 import urllib.request
 import urllib.parse
@@ -10,10 +9,10 @@ from tkinter.ttk import *
 
 from tkinter.font import *
 import http.client
+import champion
 
 #JSON 파일을 딕셔너리로 파싱하기
 my_api_key = "RGAPI-20f33bb9-dd69-4562-a966-0440eb963870"
-
 # 소환사 정보 : 닉네임으로 검색
 # id        # 리그 정보 검색에 필요
 # accountId
@@ -95,6 +94,15 @@ class LOLAPIProcess:
         result = response.read(15000).decode('utf-8')
         self.SummonerMatchJsonData = ParsingSummonerMatchData(result)
 
+    def GetSummonerDetailMatchData(self):
+        summoner_detail_match_url = []
+        self.SummonerDetailMatchJsonData = []
+        for i in range(5):
+            summoner_detail_match_url.append("/lol/match/v4/matches/" + self.SummonerMatchJsonData.gameId[i] +"?api_key="+my_api_key)
+            self.conn.request("GET", summoner_detail_match_url[i])
+            response = self.conn.getresponse()
+            result = response.read(61000).decode('utf-8')
+            self.SummonerDetailMatchJsonData.append(ParsingSummonerDetailMatchData(result))
 
 
 	##이미지 파일 얻어오는코드
@@ -115,21 +123,15 @@ class LOLAPIProcess:
 
     def PrintSummonerMatchData(self):
         print(self.SummonerMatchJsonData)
+    def PrintSummonerDetailMatchData(self):
+        for i in range(5):
+            print(self.SummonerDetailMatchJsonData[i])
 
 
 class ParsingSummonerData:
     def __init__(self, JSON):
         self.jsonData = json.loads(JSON) #string 형태의 JSON 객체를 딕셔너리로 바꾼다
-
-
-
-        #self.id = self.jsonData["rows"][0]["id"]
-        #self.accountId = self.jsonData["rows"][0]["itemName"]
-        #self.itemRarity = self.jsonData["rows"][0]["itemRarity"]
-        #self.itemType = self.jsonData["rows"][0]["itemType"]
-        #self.itemDetail = str(self.jsonData["rows"][0]["itemTypeDetail"])
-        #self.itemAvailableLevel = str(self.jsonData["rows"][0]["itemAvailableLevel"])
-
+               
         self.id = str(self.jsonData["id"])
         self.accountId = str(self.jsonData["accountId"])
         self.puuid = str(self.jsonData["puuid"])
@@ -149,21 +151,6 @@ class ParsingSummonerData:
 
     def getid(self):
         return self.id
-
-# 리그 정보 : id 로 검색
-# 솔랭
-# tier
-# summonerName
-# hotStreak 연승
-# wins 승수
-# losses 패배
-# rank 랭크
-# leagueName 리그이름
-# leagueId
-# queueType
-# summonerId
-# leaguePoints": 23
-# 자유랭 반복
 
 class ParsingSummonerLeagueData:
     def __init__(self, JSON):
@@ -206,20 +193,7 @@ class ParsingSummonerLeagueData:
             "]\n[queueType : " + self.solo_queueType + \
             "]\n[summonerId : " + self.solo_summonerId + \
             "]\n[leaguePoints : " + self.solo_leaguePoints + "]\n\n"
-            #"]\n[leaguePoints : " + self.solo_leaguePoints + "]\n" + \
-            #"[free]\n" + \
-            #"[tier : " + self.solo_tier + \
-            #"]\n[summonerName : " + self.solo_summonerName + \
-            #"]\n[hotStreak : " + self.solo_hotStreak + \
-            #"]\n[wins : " + self.solo_wins + \
-            #"]\n[losses : " + self.solo_losses + \
-            #"]\n[rank" +  self.solo_rank + \
-            #"]\n[leagueName : " + self.solo_leagueName + \
-            #"]\n[leagueId : " + self.solo_leagueId + \
-            #"]\n[queueType : " + self.solo_queueType + \
-            #"]\n[summonerId : " + self.solo_summonerId + \
-            #"]\n[leaguePoints : " + self.solo_leaguePoints + "]"
-
+    
 class ParsingSummonerMatchData:
     def __init__(self, JSON):
         self.jsonData = json.loads(JSON) #string 형태의 JSON 객체를 딕셔너리로 바꾼다
@@ -243,7 +217,7 @@ class ParsingSummonerMatchData:
         self.lane = []
 
 
-        for n in range(int(self.jsonData["endIndex"])):
+        for n in range(5):
             self.platformId.append(self.jsonData["matches"][n]["platformId"])
             self.gameId.append(str(self.jsonData["matches"][n]["gameId"]))
             self.champion.append(str(self.jsonData["matches"][n]["champion"]))
@@ -261,7 +235,7 @@ class ParsingSummonerMatchData:
             "]\n[champion : " + self.champion[0] + \
             "]\n[queue : " + self.queue[0] + \
             "]\n[season : " + self.season[0] + \
-            "]\n[timestamp" +  self.timestamp[0] + \
+            "]\n[timestamp : " +  self.timestamp[0] + \
             "]\n[role : " + self.role[0] + \
             "]\n[lane : " + self.lane[0] + "]\n" \
                 + \
@@ -270,7 +244,7 @@ class ParsingSummonerMatchData:
             "]\n[champion : " + self.champion[1] + \
             "]\n[queue : " + self.queue[1] + \
             "]\n[season : " + self.season[1] + \
-            "]\n[timestamp" +  self.timestamp[1] + \
+            "]\n[timestamp : " +  self.timestamp[1] + \
             "]\n[role : " + self.role[1] + \
             "]\n[lane : " + self.lane[1] + "]\n" \
                 + \
@@ -279,7 +253,7 @@ class ParsingSummonerMatchData:
             "]\n[champion : " + self.champion[2] + \
             "]\n[queue : " + self.queue[2] + \
             "]\n[season : " + self.season[2] + \
-            "]\n[timestamp" +  self.timestamp[2] + \
+            "]\n[timestamp : " +  self.timestamp[2] + \
             "]\n[role : " + self.role[2] + \
             "]\n[lane : " + self.lane[2] + "]\n" \
                 + \
@@ -288,7 +262,7 @@ class ParsingSummonerMatchData:
             "]\n[champion : " + self.champion[3] + \
             "]\n[queue : " + self.queue[3] + \
             "]\n[season : " + self.season[3] + \
-            "]\n[timestamp" +  self.timestamp[3] + \
+            "]\n[timestamp : " +  self.timestamp[3] + \
             "]\n[role : " + self.role[3] + \
             "]\n[lane : " + self.lane[3] + "]\n" \
                 + \
@@ -297,22 +271,117 @@ class ParsingSummonerMatchData:
             "]\n[champion : " + self.champion[4] + \
             "]\n[queue : " + self.queue[4] + \
             "]\n[season : " + self.season[4] + \
-            "]\n[timestamp" +  self.timestamp[4] + \
+            "]\n[timestamp : " +  self.timestamp[4] + \
             "]\n[role : " + self.role[4] + \
             "]\n[lane : " + self.lane[4] + "]\n\n" \
             
 
+class ParsingSummonerDetailMatchData:
+    def __init__(self, JSON):
+        self.jsonData = json.loads(JSON) #string 형태의 JSON 객체를 딕셔너리로 바꾼다
+        self.summonerName = []
+        self.champion_id = []
+        self.spell_id = []
+        self.win = []
+        self.lane = []
+        self.kills = []
+        self.deaths = []
+        self.assists = []
 
+
+        for i in range(10):
+            self.summonerName.append(str(self.jsonData["participantIdentities"][i]["player"]["summonerName"]))
+            self.champion_id.append(str(self.jsonData["participants"][i]["championId"]))
+            self.spell_id.append(str((self.jsonData["participants"][i]["spell1Id"], self.jsonData["participants"][i]["spell2Id"])))
+            self.win.append(str(self.jsonData["participants"][i]["stats"]["win"]))
+            self.lane.append(str(self.jsonData["participants"][i]["timeline"]["lane"]))
+            self.kills.append(str(self.jsonData["participants"][i]["stats"]["kills"]))
+            self.deaths.append(str(self.jsonData["participants"][i]["stats"]["deaths"]))
+            self.assists.append(str(self.jsonData["participants"][i]["stats"]["assists"]))
+        self.gameMode = str(self.jsonData["gameMode"])
+
+
+
+
+    def __str__(self):
+        #return \
+        #    "gameMode : " + self.gameMode + "\n" + \
+        #    "[summonerName : " + self.summonerName[0] + \
+        #    "]\n[champion_id : " + self.champion_id[0] + \
+        #    "]\n[spell_id : " + self.spell_id[0] + \
+        #    "]\n[win : " + self.win[0] + \
+        #    "]\n[lane : " + self.lane[0] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[1] + \
+        #    "]\n[champion_id : " + self.champion_id[1] + \
+        #    "]\n[spell_id : " + self.spell_id[1] + \
+        #    "]\n[win : " + self.win[1] + \
+        #    "]\n[lane : " + self.lane[1] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[2] + \
+        #    "]\n[champion_id : " + self.champion_id[2] + \
+        #    "]\n[spell_id : " + self.spell_id[2] + \
+        #    "]\n[win : " + self.win[2] + \
+        #    "]\n[lane : " + self.lane[2] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[3] + \
+        #    "]\n[champion_id : " + self.champion_id[3] + \
+        #    "]\n[spell_id : " + self.spell_id[3] + \
+        #    "]\n[win : " + self.win[3] + \
+        #    "]\n[lane : " + self.lane[3] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[4] + \
+        #    "]\n[champion_id : " + self.champion_id[4] + \
+        #    "]\n[spell_id : " + self.spell_id[4] + \
+        #    "]\n[win : " + self.win[4] + \
+        #    "]\n[lane : " + self.lane[4] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[5] + \
+        #    "]\n[champion_id : " + self.champion_id[5] + \
+        #    "]\n[spell_id : " + self.spell_id[5] + \
+        #    "]\n[win : " + self.win[5] + \
+        #    "]\n[lane : " + self.lane[5] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[6] + \
+        #    "]\n[champion_id : " + self.champion_id[6] + \
+        #    "]\n[spell_id : " + self.spell_id[6] + \
+        #    "]\n[win : " + self.win[6] + \
+        #    "]\n[lane : " + self.lane[6] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[7] + \
+        #    "]\n[champion_id : " + self.champion_id[7] + \
+        #    "]\n[spell_id : " + self.spell_id[7] + \
+        #    "]\n[win : " + self.win[7] + \
+        #    "]\n[lane : " + self.lane[7] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[8] + \
+        #    "]\n[champion_id : " + self.champion_id[8] + \
+        #    "]\n[spell_id : " + self.spell_id[8] + \
+        #    "]\n[win : " + self.win[8] + \
+        #    "]\n[lane : " + self.lane[8] + \
+        #        + \
+        #    "[summonerName : " + self.summonerName[9] + \
+        #    "]\n[champion_id : " + self.champion_id[9] + \
+        #    "]\n[spell_id : " + self.spell_id[9] + \
+        #    "]\n[win : " + self.win[9] + \
+        #    "]\n[lane : " + self.lane[9] + "]\n\n" \
+        return "DetailMatch"
 
 
 Process = LOLAPIProcess()
 summoner_name = str(input("소환사 이름 입력 : "))
 Process.GetSummonerName(summoner_name)
+
 Process.GetSummonerInfo()
 Process.GetSummonerLeagueData()
 Process.GetSummonerMatchData()
+Process.GetSummonerDetailMatchData()
+
+
+
 Process.PrintSummonerData()
 Process.PrintSummonerLeagueData()
 Process.PrintSummonerMatchData()
+Process.PrintSummonerDetailMatchData()
 
 
