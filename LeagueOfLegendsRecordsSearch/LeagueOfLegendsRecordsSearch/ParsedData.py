@@ -368,20 +368,20 @@ class ParsingSummonerDetailMatchData:
         return "DetailMatch"
 
 
-Process = LOLAPIProcess()
-summoner_name = str(input("소환사 이름 입력 : "))
-Process.GetSummonerName(summoner_name)
+#Process = LOLAPIProcess()
+#summoner_name = str(input("소환사 이름 입력 : "))
+#Process.GetSummonerName(summoner_name)
 
-Process.GetSummonerInfo()
-Process.GetSummonerLeagueData()
-Process.GetSummonerMatchData()
-Process.GetSummonerDetailMatchData()
+#Process.GetSummonerInfo()
+#Process.GetSummonerLeagueData()
+#Process.GetSummonerMatchData()
+#Process.GetSummonerDetailMatchData()
 
 
 
-Process.PrintSummonerData()
-Process.PrintSummonerLeagueData()
-Process.PrintSummonerMatchData()
-Process.PrintSummonerDetailMatchData()
+#Process.PrintSummonerData()
+#Process.PrintSummonerLeagueData()
+#Process.PrintSummonerMatchData()
+#Process.PrintSummonerDetailMatchData()
 
 

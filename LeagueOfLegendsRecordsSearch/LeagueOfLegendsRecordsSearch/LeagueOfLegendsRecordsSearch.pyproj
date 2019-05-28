@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>035ebe0b-c4b6-4a06-8d5b-56b0449ea409</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>LeagueOfLegendsRecordsSearch.py</StartupFile>
+    <StartupFile>start.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,8 +24,14 @@
     <Compile Include="champion.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LeagueOfLegendsRecordsSearch.py" />
+    <Compile Include="ParsedData.py" />
+    <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="spell.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="start.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
