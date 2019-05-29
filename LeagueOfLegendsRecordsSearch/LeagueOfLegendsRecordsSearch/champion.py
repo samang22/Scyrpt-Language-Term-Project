@@ -102,6 +102,7 @@ def getChampionName(champion_id):
     elif champion_id == 126:    return "Jayce";
     elif champion_id == 131:    return "Diana";
     elif champion_id == 143:    return "Zyra";
+    elif champion_id == 429:    return "Kalista";
     elif champion_id == 517:    return "Sylas";
     else:
         return "Unknwon"

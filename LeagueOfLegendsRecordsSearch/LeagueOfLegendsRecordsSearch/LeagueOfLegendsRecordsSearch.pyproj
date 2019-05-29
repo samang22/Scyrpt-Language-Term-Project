@@ -25,9 +25,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ParsedData.py" />
-    <Compile Include="main.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="spell.py">
       <SubType>Code</SubType>
     </Compile>

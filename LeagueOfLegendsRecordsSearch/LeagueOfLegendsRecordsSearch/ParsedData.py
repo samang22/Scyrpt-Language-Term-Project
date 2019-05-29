@@ -287,9 +287,9 @@ class ParsingSummonerDetailMatchData:
             self.spell2.append(str((self.jsonData["participants"][i]["spell2Id"])))
             self.win.append(str(self.jsonData["participants"][i]["stats"]["win"]))
             self.lane.append(str(self.jsonData["participants"][i]["timeline"]["lane"]))
-            self.kills.append(str(self.jsonData["participants"][i]["stats"]["kills"]))
-            self.deaths.append(str(self.jsonData["participants"][i]["stats"]["deaths"]))
-            self.assists.append(str(self.jsonData["participants"][i]["stats"]["assists"]))
+            self.kills.append((self.jsonData["participants"][i]["stats"]["kills"]))
+            self.deaths.append((self.jsonData["participants"][i]["stats"]["deaths"]))
+            self.assists.append((self.jsonData["participants"][i]["stats"]["assists"]))
         self.gameMode = str(self.jsonData["gameMode"])
 
 
