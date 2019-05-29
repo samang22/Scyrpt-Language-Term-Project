@@ -12,32 +12,9 @@ import http.client
 import champion
 
 #JSON 파일을 딕셔너리로 파싱하기
-my_api_key = "RGAPI-20f33bb9-dd69-4562-a966-0440eb963870"
-# 소환사 정보 : 닉네임으로 검색
-# id        # 리그 정보 검색에 필요
-# accountId
-# puuid
-# name
-# profileIconId
-# revisionDate
-# summonerLevel
 
-# 리그 정보 : id 로 검색
-# 솔랭
-# tier
-# summonerName
-# hotStreak 연승
-# wins 승수
-# losses 패배
-# rank 랭크
-# leagueName 리그이름
-# leagueId
-# queueType
-# summonerId
-# leaguePoints": 23
-# 자유랭 반복
+my_api_key = "RGAPI-65136b4e-1f6c-4859-a0fe-4723a091504f"
 
-my_api_key = "RGAPI-1d01a975-e32d-4e86-8e44-0f90de28f81a"
 class LOLAPIProcess:
     def GetSummonerName(self, SummonerName):
 
@@ -97,7 +74,7 @@ class LOLAPIProcess:
     def GetSummonerDetailMatchData(self):
         summoner_detail_match_url = []
         self.SummonerDetailMatchJsonData = []
-        for i in range(5):
+        for i in range(10):
             summoner_detail_match_url.append("/lol/match/v4/matches/" + self.SummonerMatchJsonData.gameId[i] +"?api_key="+my_api_key)
             self.conn.request("GET", summoner_detail_match_url[i])
             response = self.conn.getresponse()
@@ -207,7 +184,7 @@ class ParsingSummonerMatchData:
         self.lane = []
 
 
-        for n in range(5):
+        for n in range(10):
             self.platformId.append(self.jsonData["matches"][n]["platformId"])
             self.gameId.append(str(self.jsonData["matches"][n]["gameId"]))
             self.champion.append(str(self.jsonData["matches"][n]["champion"]))

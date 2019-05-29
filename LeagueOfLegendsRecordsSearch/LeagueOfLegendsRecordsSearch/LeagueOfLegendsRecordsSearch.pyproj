@@ -24,6 +24,9 @@
     <Compile Include="champion.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="mysmtplib.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ParsedData.py" />
     <Compile Include="spell.py">
       <SubType>Code</SubType>
