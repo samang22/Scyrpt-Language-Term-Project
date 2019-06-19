@@ -13,7 +13,7 @@ import champion
 
 #JSON 파일을 딕셔너리로 파싱하기
 
-my_api_key = "RGAPI-65136b4e-1f6c-4859-a0fe-4723a091504f"
+my_api_key = "RGAPI-d781ac1a-4b48-42fb-9b94-9ee31b64247c"
 
 class LOLAPIProcess:
     def GetSummonerName(self, SummonerName):
@@ -133,7 +133,7 @@ class ParsingSummonerLeagueData:
     def __init__(self, JSON):
         self.jsonData = json.loads(JSON) #string 형태의 JSON 객체를 딕셔너리로 바꾼다
 
-        self.solo_tier = self.jsonData[0]["tier"]
+        self.solo_tier = str(self.jsonData[0]["tier"])
         self.solo_summonerName = str(self.jsonData[0]["summonerName"])
         self.solo_hotStreak = str(self.jsonData[0]["hotStreak"])
         self.solo_wins = str(self.jsonData[0]["wins"])
